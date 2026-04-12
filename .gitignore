@@ -1,0 +1,28 @@
+# ── Secrets (NEVER commit these) ──────────────
+.env
+
+# ── Composer / vendor ─────────────────────────
+vendor/
+composer.phar
+composer.lock
+
+# ── DomPDF cache (server-generated) ───────────
+storage/font-cache/*
+storage/pdf-cache/*
+!storage/font-cache/.gitkeep
+!storage/pdf-cache/.gitkeep
+
+# ── OS & editor noise ─────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── Logs ──────────────────────────────────────
+*.log
+error_log
+
+# ── Uploaded/generated PDFs ───────────────────
+*.pdf
