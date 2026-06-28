@@ -68,6 +68,44 @@ function getDB(): PDO {
     return $pdo;
 }
 
+// ─── IP rate limiting ────────────────────────
+function getClientIp(): string {
+    // REMOTE_ADDR is the real IP on SiteGround shared hosting.
+    // If you add Cloudflare in future, swap to HTTP_CF_CONNECTING_IP.
+    return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+}
+
+function isIpRateLimited(): bool {
+    $ip      = getClientIp();
+    $window  = 900; // 15 minutes
+    $maxHits = 5;
+
+    $db   = getDB();
+    $stmt = $db->prepare(
+        'SELECT COUNT(*) FROM login_attempts
+         WHERE ip = ? AND attempted_at > DATE_SUB(NOW(), INTERVAL ? SECOND)'
+    );
+    $stmt->execute([$ip, $window]);
+    return (int) $stmt->fetchColumn() >= $maxHits;
+}
+
+function recordFailedLogin(): void {
+    $ip = getClientIp();
+    $db = getDB();
+
+    $db->prepare('INSERT INTO login_attempts (ip) VALUES (?)')->execute([$ip]);
+
+    // Prune rows older than 15 minutes to keep the table small
+    $db->prepare(
+        'DELETE FROM login_attempts WHERE attempted_at < DATE_SUB(NOW(), INTERVAL 900 SECOND)'
+    )->exec();
+}
+
+function clearLoginAttempts(): void {
+    $db = getDB();
+    $db->prepare('DELETE FROM login_attempts WHERE ip = ?')->execute([getClientIp()]);
+}
+
 // ─── Auth ────────────────────────────────────
 function isLoggedIn(): bool {
     return isset($_SESSION['authenticated']) && $_SESSION['authenticated'] === true;

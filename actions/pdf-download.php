@@ -39,7 +39,7 @@ use Dompdf\Options;
 
 $options = new Options();
 $options->set('defaultFont',       'serif');
-$options->set('isRemoteEnabled',   true);
+$options->set('isRemoteEnabled',   false);
 $options->set('isHtml5ParserEnabled', true);
 $options->set('fontDir',           dirname(__DIR__) . '/storage/font-cache/');
 $options->set('fontCache',         dirname(__DIR__) . '/storage/font-cache/');

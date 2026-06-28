@@ -14,22 +14,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    // Rate limiting: max 5 attempts per 15 min
-    $attempts = $_SESSION['login_attempts'] ?? 0;
-    $lastAttempt = $_SESSION['last_attempt'] ?? 0;
-    if ($attempts >= 5 && (time() - $lastAttempt) < 900) {
+    // Rate limiting: max 5 attempts per 15 min, keyed by IP
+    if (isIpRateLimited()) {
         $error = 'Too many login attempts. Please wait 15 minutes.';
     } elseif (
         hash_equals(APP_USERNAME, $username) &&
         password_verify($password, APP_PASSWORD_HASH)
     ) {
+        clearLoginAttempts();
         session_regenerate_id(true);
         $_SESSION['authenticated'] = true;
-        $_SESSION['login_attempts'] = 0;
         redirect(SITE_URL . '/pages/dashboard.php');
     } else {
-        $_SESSION['login_attempts'] = ($attempts + 1);
-        $_SESSION['last_attempt']   = time();
+        recordFailedLogin();
         // Consistent timing to prevent user enumeration
         usleep(random_int(200000, 500000));
         $error = 'Invalid username or password.';
