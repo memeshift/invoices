@@ -12,6 +12,10 @@ storage/pdf-cache/*
 !storage/font-cache/.gitkeep
 !storage/pdf-cache/.gitkeep
 
+# ── Claude Code (local context, never published) ──
+CLAUDE.md
+.claude/
+
 # ── OS & editor noise ─────────────────────────
 .DS_Store
 Thumbs.db
