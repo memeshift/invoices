@@ -1,5 +1,6 @@
 # ── Secrets (NEVER commit these) ──────────────
 .env
+INVOICES HANDOFF.md
 
 # ── Composer / vendor ─────────────────────────
 vendor/
