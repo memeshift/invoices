@@ -5,7 +5,6 @@ INVOICES HANDOFF.md
 # ── Composer / vendor ─────────────────────────
 vendor/
 composer.phar
-composer.lock
 
 # ── DomPDF cache (server-generated) ───────────
 storage/font-cache/*
