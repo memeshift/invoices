@@ -2,6 +2,11 @@
 declare(strict_types=1);
 require_once dirname(__DIR__) . '/config/bootstrap.php';
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isLoggedIn()) {
+    redirect(SITE_URL . '/pages/dashboard.php');
+}
+verifyCsrf();
+
 // Destroy session fully
 $_SESSION = [];
 if (ini_get('session.use_cookies')) {

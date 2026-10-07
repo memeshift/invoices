@@ -14,10 +14,10 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </FilesMatch>
 
 # Block sensitive directories
-RewriteRule ^(config|sql|includes|storage|templates)(/|$) - [F,L]
+RewriteRule ^(config|sql|includes|storage|templates|setup|vendor)(/|$) - [F,L]
 
-# Block access to composer files
-<FilesMatch "(composer\.(json|lock)|package\.json)$">
+# Block access to composer files and the README
+<FilesMatch "(composer\.(json|lock)|package\.json|README\.md)$">
     Order allow,deny
     Deny from all
 </FilesMatch>
@@ -26,17 +26,10 @@ RewriteRule ^(config|sql|includes|storage|templates)(/|$) - [F,L]
 <IfModule mod_headers.c>
     Header always set X-Content-Type-Options "nosniff"
     Header always set X-Frame-Options "DENY"
-    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Content-Security-Policy "frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    Header always set Strict-Transport-Security "max-age=604800"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
-</IfModule>
-
-# PHP hardening
-<IfModule mod_php.c>
-    php_flag display_errors Off
-    php_flag log_errors On
-    php_value error_reporting 0
-    php_flag expose_php Off
 </IfModule>
 
 # Prevent directory listing

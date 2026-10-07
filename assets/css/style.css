@@ -153,6 +153,19 @@ h1, h2, h3, h4 {
     font-size: 0.75rem !important;
 }
 
+.site-nav form { display: flex; }
+
+button.nav-logout {
+    font-family: var(--font-mono);
+    color: var(--dark);
+    letter-spacing: 0.02em;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+}
+button.nav-logout:hover { color: var(--teal-d); }
+
 .site-main {
     min-height: calc(100vh - 120px);
     padding: 2.5rem 0;
