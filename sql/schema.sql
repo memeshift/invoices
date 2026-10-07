@@ -52,4 +52,10 @@ CREATE TABLE IF NOT EXISTS `login_attempts` (
   INDEX `idx_ip_time` (`ip`, `attempted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Settings saved from the UI (override .env values)
+CREATE TABLE IF NOT EXISTS `settings` (
+  `name`  VARCHAR(64) NOT NULL PRIMARY KEY,
+  `value` TEXT        NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 SET foreign_key_checks = 1;

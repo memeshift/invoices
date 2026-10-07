@@ -27,6 +27,27 @@ define('DB_NAME',                $_ENV['DB_NAME']                ?? '');
 define('DB_USER',                $_ENV['DB_USER']                ?? '');
 define('DB_PASS',                $_ENV['DB_PASS']                ?? '');
 define('SITE_URL',               rtrim($_ENV['SITE_URL'] ?? 'https://your-domain.com', '/'));
+
+// Fields editable on pages/settings.php (.env key => label)
+const SETTINGS_FIELDS = [
+    'FREELANCER_NAME'          => 'Name',
+    'FREELANCER_COMPANY'       => 'Company / trade name',
+    'FREELANCER_ADDRESS_LINE1' => 'Address line 1',
+    'FREELANCER_ADDRESS_LINE2' => 'Address line 2',
+    'FREELANCER_EMAIL'         => 'Email',
+    'FREELANCER_PHONE'         => 'Phone',
+    'FREELANCER_WEBSITE'       => 'Website',
+    'FREELANCER_BANK_NAME'     => 'Bank name',
+    'FREELANCER_IBAN'          => 'IBAN',
+    'FREELANCER_BIC'           => 'BIC / SWIFT',
+];
+
+// Saved settings override .env; if the table doesn't exist yet, .env values stand
+try {
+    $rows = getDB()->query('SELECT name, value FROM settings')->fetchAll(PDO::FETCH_KEY_PAIR);
+    $_ENV = array_replace($_ENV, array_intersect_key($rows, SETTINGS_FIELDS));
+} catch (PDOException) {}
+
 define('FREELANCER_NAME',        $_ENV['FREELANCER_NAME']        ?? 'Your Name');
 define('FREELANCER_COMPANY',     $_ENV['FREELANCER_COMPANY']     ?? '');
 define('FREELANCER_ADDR1',       $_ENV['FREELANCER_ADDRESS_LINE1'] ?? '');
@@ -98,7 +119,7 @@ function recordFailedLogin(): void {
     // Prune rows older than 15 minutes to keep the table small
     $db->prepare(
         'DELETE FROM login_attempts WHERE attempted_at < DATE_SUB(NOW(), INTERVAL 900 SECOND)'
-    )->exec();
+    )->execute();
 }
 
 function clearLoginAttempts(): void {
@@ -178,6 +199,21 @@ function statusLabel(string $status): string {
         'overdue' => 'Overdue',
         default   => ucfirst($status),
     };
+}
+
+function isValidIban(string $iban): bool {
+    $iban = strtoupper(preg_replace('/\s+/', '', $iban));
+    if (!preg_match('/^[A-Z]{2}\d{2}[A-Z0-9]{11,30}$/', $iban)) return false;
+
+    $digits = '';
+    foreach (str_split(substr($iban, 4) . substr($iban, 0, 4)) as $ch) {
+        $digits .= ctype_alpha($ch) ? (string)(ord($ch) - 55) : $ch;
+    }
+    $rem = 0;
+    foreach (str_split($digits) as $d) {
+        $rem = ($rem * 10 + (int)$d) % 97;
+    }
+    return $rem === 1;
 }
 
 // ─── Invoice helpers ─────────────────────────

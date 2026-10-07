@@ -28,6 +28,7 @@ $flash = getFlash();
         </a>
         <nav class="site-nav">
             <a href="<?= SITE_URL ?>/pages/dashboard.php">Dashboard</a>
+            <a href="<?= SITE_URL ?>/pages/settings.php">Settings</a>
             <a href="<?= SITE_URL ?>/pages/invoice-new.php" class="btn btn-sm btn-primary">+ New Invoice</a>
             <a href="<?= SITE_URL ?>/auth/logout.php" class="nav-logout">Sign out</a>
         </nav>
