@@ -34,6 +34,18 @@
         font-weight: 700;
         src: url('<?= dirname(__DIR__) ?>/assets/fonts/Lora-BoldItalic.ttf') format('truetype');
     }
+    @font-face {
+        font-family: 'DM Mono';
+        font-style: normal;
+        font-weight: 400;
+        src: url('<?= dirname(__DIR__) ?>/assets/fonts/DMMono-Regular.ttf') format('truetype');
+    }
+    @font-face {
+        font-family: 'DM Mono';
+        font-style: normal;
+        font-weight: 700;
+        src: url('<?= dirname(__DIR__) ?>/assets/fonts/DMMono-Medium.ttf') format('truetype');
+    }
 
     /* ── Reset ── */
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -111,7 +123,7 @@
     }
 
     .invoice-number {
-        font-family: 'Courier New', monospace;
+        font-family: 'DM Mono', 'Courier New', monospace;
         font-size: 11pt;
         color: #007998;
         margin-top: 4pt;
@@ -142,7 +154,7 @@
     }
 
     .meta-label {
-        font-family: 'Courier New', monospace;
+        font-family: 'DM Mono', 'Courier New', monospace;
         font-size: 7.5pt;
         text-transform: uppercase;
         letter-spacing: 1pt;
@@ -163,7 +175,7 @@
     }
 
     .bill-to-label {
-        font-family: 'Courier New', monospace;
+        font-family: 'DM Mono', 'Courier New', monospace;
         font-size: 7.5pt;
         text-transform: uppercase;
         letter-spacing: 1pt;
@@ -205,7 +217,7 @@
 
     .items-table thead th {
         padding: 7pt 10pt;
-        font-family: 'Courier New', monospace;
+        font-family: 'DM Mono', 'Courier New', monospace;
         font-size: 8pt;
         text-transform: uppercase;
         letter-spacing: 0.8pt;
@@ -234,11 +246,11 @@
 
     .items-table tbody td.right {
         text-align: right;
-        font-family: 'Courier New', monospace;
+        font-family: 'DM Mono', 'Courier New', monospace;
     }
 
     .items-table tbody td.mono {
-        font-family: 'Courier New', monospace;
+        font-family: 'DM Mono', 'Courier New', monospace;
     }
 
     .col-desc  { width: 50%; }
@@ -270,7 +282,7 @@
 
     .totals-table .value-cell {
         text-align: right;
-        font-family: 'Courier New', monospace;
+        font-family: 'DM Mono', 'Courier New', monospace;
         font-size: 10pt;
         width: 20%;
     }
@@ -294,7 +306,7 @@
         font-weight: 700;
         color: #007998;
         text-align: right;
-        font-family: 'Courier New', monospace;
+        font-family: 'DM Mono', 'Courier New', monospace;
         padding-top: 6pt;
     }
 
@@ -320,7 +332,7 @@
     }
 
     .notes-label {
-        font-family: 'Courier New', monospace;
+        font-family: 'DM Mono', 'Courier New', monospace;
         font-size: 7.5pt;
         text-transform: uppercase;
         letter-spacing: 1pt;
@@ -355,7 +367,7 @@
     }
 
     .bank-label {
-        font-family: 'Courier New', monospace;
+        font-family: 'DM Mono', 'Courier New', monospace;
         font-size: 7pt;
         text-transform: uppercase;
         letter-spacing: 0.8pt;
@@ -364,7 +376,7 @@
     }
 
     .bank-value {
-        font-family: 'Courier New', monospace;
+        font-family: 'DM Mono', 'Courier New', monospace;
         font-size: 9.5pt;
         color: #333;
     }
@@ -400,7 +412,7 @@
         display: inline-block;
         border: 3pt solid #007998;
         color: #007998;
-        font-family: 'Courier New', monospace;
+        font-family: 'DM Mono', 'Courier New', monospace;
         font-size: 14pt;
         font-weight: bold;
         text-transform: uppercase;
