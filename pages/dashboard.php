@@ -103,7 +103,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
 <?php if (empty($invoices)): ?>
     <div class="empty-state">
         <p>No invoices yet.</p>
-        <a href="<?= SITE_URL ?>/pages/invoice-new.php" class="btn btn-primary">Create your first invoice</a>
+        <a href="<?= SITE_URL ?>/pages/invoice-new.php" class="btn btn-primary">Create an invoice</a>
     </div>
 <?php else: ?>
 <div class="table-wrap">

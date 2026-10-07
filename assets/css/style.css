@@ -148,15 +148,11 @@ h1, h2, h3, h4 {
 }
 .site-nav a:hover { color: var(--teal-d); }
 
-.nav-logout {
-    opacity: 0.6;
-    font-size: 0.75rem !important;
-}
-
 .site-nav form { display: flex; }
 
 button.nav-logout {
     font-family: var(--font-mono);
+    font-size: 0.8rem;
     color: var(--dark);
     letter-spacing: 0.02em;
     background: none;
