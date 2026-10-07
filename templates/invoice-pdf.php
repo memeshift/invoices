@@ -8,31 +8,31 @@
         font-family: 'Lora';
         font-style: normal;
         font-weight: 400;
-        src: url('<?= SITE_URL ?>/assets/fonts/Lora-Regular.ttf') format('truetype');
+        src: url('<?= dirname(__DIR__) ?>/assets/fonts/Lora-Regular.ttf') format('truetype');
     }
     @font-face {
         font-family: 'Lora';
         font-style: italic;
         font-weight: 400;
-        src: url('<?= SITE_URL ?>/assets/fonts/Lora-Italic.ttf') format('truetype');
+        src: url('<?= dirname(__DIR__) ?>/assets/fonts/Lora-Italic.ttf') format('truetype');
     }
     @font-face {
         font-family: 'Lora';
         font-style: normal;
         font-weight: 600;
-        src: url('<?= SITE_URL ?>/assets/fonts/Lora-SemiBold.ttf') format('truetype');
+        src: url('<?= dirname(__DIR__) ?>/assets/fonts/Lora-SemiBold.ttf') format('truetype');
     }
     @font-face {
         font-family: 'Lora';
         font-style: normal;
         font-weight: 700;
-        src: url('<?= SITE_URL ?>/assets/fonts/Lora-Bold.ttf') format('truetype');
+        src: url('<?= dirname(__DIR__) ?>/assets/fonts/Lora-Bold.ttf') format('truetype');
     }
     @font-face {
         font-family: 'Lora';
         font-style: italic;
         font-weight: 700;
-        src: url('<?= SITE_URL ?>/assets/fonts/Lora-BoldItalic.ttf') format('truetype');
+        src: url('<?= dirname(__DIR__) ?>/assets/fonts/Lora-BoldItalic.ttf') format('truetype');
     }
 
     /* ── Reset ── */
