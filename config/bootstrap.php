@@ -97,9 +97,15 @@ function getDB(): PDO {
 
 // ─── IP rate limiting ────────────────────────
 function getClientIp(): string {
-    // REMOTE_ADDR is the real IP on SiteGround shared hosting.
+    // REMOTE_ADDR is the real client IP behind Hostinger's CDN (checked 7 Oct 2026).
     // If you add Cloudflare in future, swap to HTTP_CF_CONNECTING_IP.
-    return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    $ip  = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    $bin = inet_pton($ip);
+    // IPv6 clients control a whole /64, so rate-limit on the prefix, not the single address
+    if ($bin !== false && strlen($bin) === 16 && !str_starts_with($bin, "\0\0\0\0\0\0\0\0\0\0\xff\xff")) {
+        return inet_ntop(substr($bin, 0, 8) . str_repeat("\0", 8));
+    }
+    return $ip;
 }
 
 function isIpRateLimited(): bool {

@@ -4,6 +4,14 @@
    Fonts: Lora (display/body) · DM Mono (labels/mono)
 ═══════════════════════════════════════════════ */
 
+/* ── Fonts (self-hosted) ── */
+@font-face { font-family: 'Lora'; font-style: normal; font-weight: 400; font-display: swap; src: url('../fonts/Lora-Regular.ttf') format('truetype'); }
+@font-face { font-family: 'Lora'; font-style: italic; font-weight: 400; font-display: swap; src: url('../fonts/Lora-Italic.ttf') format('truetype'); }
+@font-face { font-family: 'Lora'; font-style: normal; font-weight: 600; font-display: swap; src: url('../fonts/Lora-SemiBold.ttf') format('truetype'); }
+@font-face { font-family: 'Lora'; font-style: normal; font-weight: 700; font-display: swap; src: url('../fonts/Lora-Bold.ttf') format('truetype'); }
+@font-face { font-family: 'DM Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url('../fonts/DMMono-Regular.ttf') format('truetype'); }
+@font-face { font-family: 'DM Mono'; font-style: normal; font-weight: 500; font-display: swap; src: url('../fonts/DMMono-Medium.ttf') format('truetype'); }
+
 /* ── Custom properties ── */
 :root {
     --yellow:   #FAC946;
