@@ -311,6 +311,7 @@
         border-left: 2pt solid #FAC946;
         padding-left: 8pt;
         line-height: 1.5;
+        white-space: pre-line;
     }
 
     /* ── Notes ── */
@@ -526,12 +527,12 @@
         </table>
     </div>
 
-    <!-- ── VAT Notice ── -->
+    <!-- ── Invoice text (Settings) ── -->
+    <?php if (trim(FREELANCER_INVOICE_TEXT) !== ''): ?>
     <div class="vat-notice-section">
-        <div class="vat-notice">
-            Kein Umsatzsteuerausweis aufgrund Anwendung der Kleinunternehmerregelung gemäß § 19 UStG.
-        </div>
+        <div class="vat-notice"><?= e(FREELANCER_INVOICE_TEXT) ?></div>
     </div>
+    <?php endif; ?>
 
     <!-- ── Notes ── -->
     <?php if (trim($invoice['notes'])): ?>
