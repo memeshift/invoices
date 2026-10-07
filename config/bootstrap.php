@@ -40,6 +40,8 @@ const SETTINGS_FIELDS = [
     'FREELANCER_BANK_NAME'     => 'Bank name',
     'FREELANCER_IBAN'          => 'IBAN',
     'FREELANCER_BIC'           => 'BIC / SWIFT',
+    'FREELANCER_TAX_ID_LABEL'  => 'Name of tax ID',
+    'FREELANCER_TAX_ID'        => 'Tax ID number',
 ];
 
 // Saved settings override .env; if the table doesn't exist yet, .env values stand
@@ -58,6 +60,8 @@ define('FREELANCER_WEBSITE',     $_ENV['FREELANCER_WEBSITE']     ?? '');
 define('FREELANCER_BANK',        $_ENV['FREELANCER_BANK_NAME']   ?? '');
 define('FREELANCER_IBAN',        $_ENV['FREELANCER_IBAN']        ?? '');
 define('FREELANCER_BIC',         $_ENV['FREELANCER_BIC']         ?? '');
+define('FREELANCER_TAX_ID_LABEL', $_ENV['FREELANCER_TAX_ID_LABEL'] ?? '');
+define('FREELANCER_TAX_ID',      $_ENV['FREELANCER_TAX_ID']      ?? '');
 
 // Session security
 ini_set('session.cookie_httponly', '1');

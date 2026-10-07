@@ -24,6 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Email address is not valid.';
     }
 
+    if (!$error && $values['FREELANCER_TAX_ID'] !== '' && !preg_match('/^[\p{L}\p{N} \/.\-]+$/u', $values['FREELANCER_TAX_ID'])) {
+        $error = 'Tax ID may only contain letters, numbers, spaces, dashes, slashes and dots.';
+    }
+
     if (!$error && $values['FREELANCER_IBAN'] !== '') {
         if (!isValidIban($values['FREELANCER_IBAN'])) {
             $error = 'IBAN failed the checksum. Check for a typo, or leave it blank.';
@@ -48,6 +52,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $groups = [
     'Your details'    => ['FREELANCER_NAME', 'FREELANCER_COMPANY', 'FREELANCER_ADDRESS_LINE1', 'FREELANCER_ADDRESS_LINE2', 'FREELANCER_EMAIL', 'FREELANCER_PHONE', 'FREELANCER_WEBSITE'],
     'Payment details' => ['FREELANCER_BANK_NAME', 'FREELANCER_IBAN', 'FREELANCER_BIC'],
+    'Tax details'     => ['FREELANCER_TAX_ID_LABEL', 'FREELANCER_TAX_ID'],
+];
+
+$notes = [
+    'FREELANCER_IBAN'         => "Optional. Leave blank for countries that don't use IBAN.",
+    'FREELANCER_TAX_ID_LABEL' => 'What your country calls it, as it should print on invoices, e.g. Steuernummer, USt-IdNr., VAT ID, EIN. Optional.',
+    'FREELANCER_TAX_ID'       => 'Letters, numbers, spaces, dashes, slashes and dots. Optional.',
 ];
 
 require_once dirname(__DIR__) . '/includes/header.php';
@@ -74,9 +85,9 @@ require_once dirname(__DIR__) . '/includes/header.php';
                 <input type="<?= $key === 'FREELANCER_EMAIL' ? 'email' : 'text' ?>"
                     id="<?= e($key) ?>" name="<?= e($key) ?>" maxlength="255"
                     value="<?= e($values[$key]) ?>"
-                    <?= $key === 'FREELANCER_IBAN' ? 'aria-describedby="iban-note"' : '' ?>>
-                <?php if ($key === 'FREELANCER_IBAN'): ?>
-                <small id="iban-note">Optional. Leave blank for countries that don't use IBAN.</small>
+                    <?= isset($notes[$key]) ? 'aria-describedby="' . e($key) . '-note"' : '' ?>>
+                <?php if (isset($notes[$key])): ?>
+                <small id="<?= e($key) ?>-note"><?= e($notes[$key]) ?></small>
                 <?php endif; ?>
             </div>
             <?php endforeach; ?>

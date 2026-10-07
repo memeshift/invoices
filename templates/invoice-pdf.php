@@ -434,6 +434,11 @@
                     <?php if (FREELANCER_EMAIL): ?><?= e(FREELANCER_EMAIL) ?><br><?php endif; ?>
                     <?php if (FREELANCER_PHONE): ?><?= e(FREELANCER_PHONE) ?><?php endif; ?>
                 </div>
+                <?php if (FREELANCER_TAX_ID): ?>
+                <div class="freelancer-detail">
+                    <?= e(FREELANCER_TAX_ID_LABEL ?: 'Tax ID') ?>: <?= e(FREELANCER_TAX_ID) ?>
+                </div>
+                <?php endif; ?>
             </div>
             <div class="header-right">
                 <div class="invoice-label">Invoice</div>
