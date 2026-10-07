@@ -15,12 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
 
     // Rate limiting: max 5 attempts per 15 min, keyed by IP
-    if (isIpRateLimited()) {
+    $limited = isIpRateLimited();
+    $userOk  = hash_equals(APP_USERNAME, $username);
+    $passOk  = !$limited && password_verify($password, APP_PASSWORD_HASH);
+
+    if ($limited) {
         $error = 'Too many login attempts. Please wait 15 minutes.';
-    } elseif (
-        hash_equals(APP_USERNAME, $username) &&
-        password_verify($password, APP_PASSWORD_HASH)
-    ) {
+    } elseif ($userOk && $passOk) {
         clearLoginAttempts();
         session_regenerate_id(true);
         $_SESSION['authenticated'] = true;
