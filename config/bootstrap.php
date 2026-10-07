@@ -140,8 +140,22 @@ function clearLoginAttempts(): void {
 }
 
 // ─── Auth ────────────────────────────────────
+const SESSION_IDLE_LIMIT     = 7200;   // 2 hours without a request
+const SESSION_ABSOLUTE_LIMIT = 28800;  // 8 hours from login
+
 function isLoggedIn(): bool {
-    return isset($_SESSION['authenticated']) && $_SESSION['authenticated'] === true;
+    if (($_SESSION['authenticated'] ?? false) !== true) {
+        return false;
+    }
+    $now = time();
+    if ($now - ($_SESSION['login_at'] ?? 0) > SESSION_ABSOLUTE_LIMIT
+        || $now - ($_SESSION['last_seen'] ?? 0) > SESSION_IDLE_LIMIT) {
+        $_SESSION = [];
+        setFlash('error', 'Your session expired. Please sign in again.');
+        return false;
+    }
+    $_SESSION['last_seen'] = $now;
+    return true;
 }
 
 function requireAuth(): void {

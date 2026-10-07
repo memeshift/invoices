@@ -6,7 +6,7 @@ if (isLoggedIn()) {
     redirect(SITE_URL . '/pages/dashboard.php');
 }
 
-$error = '';
+$error = getFlash()['message'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verifyCsrf();
@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         clearLoginAttempts();
         session_regenerate_id(true);
         $_SESSION['authenticated'] = true;
+        $_SESSION['login_at'] = $_SESSION['last_seen'] = time();
         redirect(SITE_URL . '/pages/dashboard.php');
     } else {
         recordFailedLogin();

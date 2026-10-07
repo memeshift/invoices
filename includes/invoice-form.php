@@ -166,13 +166,6 @@ $actionUrl = SITE_URL . '/actions/invoice-save.php';
                         </td>
                         <td></td>
                     </tr>
-                    <tr class="vat-notice-row">
-                        <td colspan="5">
-                            <span class="vat-notice">
-                                Kein Umsatzsteuerausweis aufgrund Anwendung der Kleinunternehmerregelung gemäß § 19 UStG.
-                            </span>
-                        </td>
-                    </tr>
                 </tfoot>
             </table>
         </div>
