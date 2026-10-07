@@ -26,7 +26,7 @@ define('DB_HOST',                $_ENV['DB_HOST']                ?? 'localhost')
 define('DB_NAME',                $_ENV['DB_NAME']                ?? '');
 define('DB_USER',                $_ENV['DB_USER']                ?? '');
 define('DB_PASS',                $_ENV['DB_PASS']                ?? '');
-define('SITE_URL',               rtrim($_ENV['SITE_URL'] ?? 'https://your-domain.com', '/'));
+define('SITE_URL',               rtrim($_ENV['SITE_URL'] ?? '', '/'));
 
 // Fields editable on pages/settings.php (.env key => label)
 const SETTINGS_FIELDS = [
