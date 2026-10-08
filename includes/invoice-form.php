@@ -162,9 +162,12 @@ $actionUrl = SITE_URL . '/actions/invoice-save.php';
                     <tr class="totals-row totals-row--total">
                         <td colspan="3" class="totals-label"><strong>Total</strong></td>
                         <td class="totals-value">
-                            <strong>
-                                <span class="cur-sym"><?= $invoice['currency'] === 'EUR' ? '€' : '$' ?></span><span id="totalDisplay"><?= number_format((float)$invoice['total'], 2) ?></span>
-                            </strong>
+                            <span role="status">
+                                <span class="visually-hidden">Total </span>
+                                <strong>
+                                    <span class="cur-sym"><?= $invoice['currency'] === 'EUR' ? '€' : '$' ?></span><span id="totalDisplay"><?= number_format((float)$invoice['total'], 2) ?></span>
+                                </strong>
+                            </span>
                             <input type="hidden" name="total" id="totalInput" value="<?= e($invoice['total']) ?>">
                         </td>
                         <td></td>

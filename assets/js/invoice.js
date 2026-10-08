@@ -109,11 +109,14 @@ function removeLineItem(btn) {
         row.querySelector('.item-amount').textContent  = '0.00';
         row.querySelector('.item-amount-hidden').value = '0.00';
         recalcAll();
+        row.querySelector('.item-desc').focus();
         return;
     }
 
+    const focusRow = row.nextElementSibling ?? row.previousElementSibling;
     row.remove();
     recalcAll();
+    focusRow.querySelector('.item-desc').focus();
 }
 
 // ── Recalculate a single row ──────────────────
@@ -158,7 +161,10 @@ function recalcTotals() {
     const totalInput      = document.getElementById('totalInput');
 
     if (subtotalDisplay) subtotalDisplay.textContent = formatNum(subtotal);
-    if (totalDisplay)    totalDisplay.textContent    = formatNum(total);
+    // Only write when changed: the total sits in a live region, and a rewrite on page load would be announced
+    if (totalDisplay && totalDisplay.textContent !== formatNum(total)) {
+        totalDisplay.textContent = formatNum(total);
+    }
     if (subtotalInput)   subtotalInput.value         = subtotal.toFixed(2);
     if (totalInput)      totalInput.value            = total.toFixed(2);
 }
