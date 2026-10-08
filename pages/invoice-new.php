@@ -30,7 +30,6 @@ require_once dirname(__DIR__) . '/includes/header.php';
 
 <div class="page-heading">
     <h2>New Invoice</h2>
-    <a href="<?= SITE_URL ?>/pages/dashboard.php" class="btn btn-ghost">← Back</a>
 </div>
 
 <?php include dirname(__DIR__) . '/includes/invoice-form.php'; ?>

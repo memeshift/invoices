@@ -247,7 +247,11 @@ function generateInvoiceNumber(): string {
     $db   = getDB();
     $year = (int) date('Y');
 
-    $db->beginTransaction();
+    // Join the caller's transaction if there is one, so a failed save also rolls the number back
+    $ownTx = !$db->inTransaction();
+    if ($ownTx) {
+        $db->beginTransaction();
+    }
     try {
         $db->prepare(
             'INSERT INTO invoice_sequence (year, last_number) VALUES (?, 1)
@@ -258,10 +262,14 @@ function generateInvoiceNumber(): string {
         $stmt->execute([$year]);
         $seq = (int) $stmt->fetchColumn();
 
-        $db->commit();
+        if ($ownTx) {
+            $db->commit();
+        }
         return sprintf('INV-%d-%04d', $year, $seq);
     } catch (Throwable $e) {
-        $db->rollBack();
+        if ($ownTx) {
+            $db->rollBack();
+        }
         throw $e;
     }
 }

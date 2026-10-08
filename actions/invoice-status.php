@@ -25,6 +25,11 @@ if (!$invoice) {
     redirect(SITE_URL . '/pages/dashboard.php');
 }
 
+if ($invoice['status'] === $status) {
+    setFlash('success', 'Invoice ' . $invoice['invoice_number'] . ' is already ' . statusLabel($status) . '.');
+    redirect(SITE_URL . ($goBack === 'edit' ? '/pages/invoice-edit.php?id=' . $id : '/pages/dashboard.php'));
+}
+
 try {
     $db = getDB();
 

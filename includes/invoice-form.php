@@ -110,6 +110,7 @@ $actionUrl = SITE_URL . '/actions/invoice-save.php';
                             <input type="text"
                                 name="items[<?= $i ?>][description]"
                                 class="item-desc"
+                                aria-label="Line item description"
                                 placeholder="Service or product description"
                                 value="<?= e($item['description']) ?>"
                                 required>
@@ -118,6 +119,7 @@ $actionUrl = SITE_URL . '/actions/invoice-save.php';
                             <input type="number"
                                 name="items[<?= $i ?>][quantity]"
                                 class="item-qty"
+                                aria-label="Line item quantity"
                                 min="0.01" step="0.01"
                                 value="<?= e((string)$item['quantity']) ?>"
                                 required>
@@ -128,6 +130,7 @@ $actionUrl = SITE_URL . '/actions/invoice-save.php';
                                 <input type="number"
                                     name="items[<?= $i ?>][rate]"
                                     class="item-rate"
+                                    aria-label="Line item rate"
                                     min="0" step="0.01"
                                     value="<?= e((string)$item['rate']) ?>"
                                     placeholder="0.00"
@@ -141,7 +144,7 @@ $actionUrl = SITE_URL . '/actions/invoice-save.php';
                             </div>
                         </td>
                         <td>
-                            <button type="button" class="remove-item-btn" title="Remove row"
+                            <button type="button" class="remove-item-btn" title="Remove row" aria-label="Remove line item"
                                 onclick="removeLineItem(this)">×</button>
                         </td>
                     </tr>
@@ -180,9 +183,6 @@ $actionUrl = SITE_URL . '/actions/invoice-save.php';
         <button type="submit" name="action" value="save" class="btn btn-primary btn-lg">
             💾 Save Invoice
         </button>
-        <button type="submit" name="action" value="save_download" class="btn btn-secondary btn-lg">
-            📄 Save &amp; Download PDF
-        </button>
         <a href="<?= SITE_URL ?>/pages/dashboard.php" class="btn btn-ghost btn-lg">Cancel</a>
     </div>
 
@@ -193,16 +193,19 @@ $actionUrl = SITE_URL . '/actions/invoice-save.php';
     <tr class="line-item-row">
         <td>
             <input type="text" name="" class="item-desc"
+                aria-label="Line item description"
                 placeholder="Service or product description" required>
         </td>
         <td>
             <input type="number" name="" class="item-qty"
+                aria-label="Line item quantity"
                 min="0.01" step="0.01" value="1" required>
         </td>
         <td>
             <div class="rate-input-wrap">
                 <span class="input-prefix cur-sym">€</span>
                 <input type="number" name="" class="item-rate"
+                    aria-label="Line item rate"
                     min="0" step="0.01" placeholder="0.00" required>
             </div>
         </td>
@@ -213,7 +216,7 @@ $actionUrl = SITE_URL . '/actions/invoice-save.php';
             </div>
         </td>
         <td>
-            <button type="button" class="remove-item-btn" title="Remove row"
+            <button type="button" class="remove-item-btn" title="Remove row" aria-label="Remove line item"
                 onclick="removeLineItem(this)">×</button>
         </td>
     </tr>

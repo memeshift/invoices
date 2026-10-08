@@ -32,28 +32,30 @@ require_once dirname(__DIR__) . '/includes/header.php';
         </span>
     </div>
     <div class="heading-actions">
-        <a href="<?= SITE_URL ?>/actions/pdf-download.php?id=<?= $id ?>"
-           class="btn btn-ghost" target="_blank">📄 Download PDF</a>
+        <div class="heading-actions-row">
+            <a href="<?= SITE_URL ?>/actions/pdf-download.php?id=<?= $id ?>"
+               class="btn btn-ghost" target="_blank">📄 Download PDF</a>
 
-        <?php if ($invoice['status'] !== 'paid'): ?>
-        <form method="POST" action="<?= SITE_URL ?>/actions/invoice-status.php"
-              style="display:inline"
-              onsubmit="return confirm('Mark as paid?')">
-            <?= csrfField() ?>
-            <input type="hidden" name="id" value="<?= $id ?>">
-            <input type="hidden" name="status" value="paid">
-            <input type="hidden" name="redirect" value="edit">
-            <button type="submit" class="btn btn-success">✅ Mark as Paid</button>
-        </form>
-        <?php endif; ?>
+            <?php if ($invoice['status'] !== 'paid'): ?>
+            <form method="POST" action="<?= SITE_URL ?>/actions/invoice-status.php"
+                  style="display:inline"
+                  onsubmit="return confirm('Mark as paid?')">
+                <?= csrfField() ?>
+                <input type="hidden" name="id" value="<?= $id ?>">
+                <input type="hidden" name="status" value="paid">
+                <input type="hidden" name="redirect" value="edit">
+                <button type="submit" class="btn btn-success">✅ Mark as Paid</button>
+            </form>
+            <?php endif; ?>
+        </div>
 
         <form method="POST" action="<?= SITE_URL ?>/actions/invoice-status.php"
-              style="display:inline">
+              class="status-form">
             <?= csrfField() ?>
             <input type="hidden" name="id" value="<?= $id ?>">
             <input type="hidden" name="redirect" value="edit">
             <label class="status-select-label">Status:
-                <select name="status" onchange="this.form.submit()" class="status-select">
+                <select name="status" class="status-select">
                     <?php foreach (['draft','sent','paid','overdue'] as $s): ?>
                         <option value="<?= $s ?>" <?= $invoice['status'] === $s ? 'selected' : '' ?>>
                             <?= statusLabel($s) ?>
@@ -61,9 +63,8 @@ require_once dirname(__DIR__) . '/includes/header.php';
                     <?php endforeach; ?>
                 </select>
             </label>
+            <button type="submit" class="btn btn-ghost btn-sm" aria-label="Update status">Update</button>
         </form>
-
-        <a href="<?= SITE_URL ?>/pages/dashboard.php" class="btn btn-ghost">← Back</a>
     </div>
 </div>
 

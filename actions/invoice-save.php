@@ -11,7 +11,6 @@ verifyCsrf();
 
 $db     = getDB();
 $id     = (int)($_POST['id'] ?? 0);
-$action = $_POST['action'] ?? 'save';
 
 // ── Sanitise inputs ──────────────────────────
 $clientName    = trim($_POST['client_name']    ?? '');
@@ -34,8 +33,17 @@ if ($clientName === '') {
 }
 
 // Validate dates
-$issueDate = date('Y-m-d', strtotime($issueDate)) ?: date('Y-m-d');
-$dueDate   = date('Y-m-d', strtotime($dueDate))   ?: date('Y-m-d', strtotime('+30 days'));
+$issueTs = strtotime($issueDate);
+$dueTs   = strtotime($dueDate);
+if ($issueTs === false || $dueTs === false) {
+    setFlash('error', 'Issue date and due date must be valid dates.');
+    redirect($id > 0
+        ? SITE_URL . '/pages/invoice-edit.php?id=' . $id
+        : SITE_URL . '/pages/invoice-new.php'
+    );
+}
+$issueDate = date('Y-m-d', $issueTs);
+$dueDate   = date('Y-m-d', $dueTs);
 
 // ── Line items ───────────────────────────────
 $rawItems = $_POST['items'] ?? [];
@@ -61,7 +69,11 @@ foreach ($rawItems as $item) {
 $subtotal = round(array_sum(array_column($items, 'amount')), 2);
 $total    = $subtotal; // No VAT (Kleinunternehmerregelung)
 
+$submittedId = $id;
+
 try {
+    $db->beginTransaction();
+
     if ($id === 0) {
         // ── Create new invoice ───────────────
         $invoiceNumber = generateInvoiceNumber();
@@ -82,6 +94,7 @@ try {
         // ── Update existing invoice ──────────
         $existing = getInvoice($id);
         if (!$existing) {
+            $db->rollBack();
             setFlash('error', 'Invoice not found.');
             redirect(SITE_URL . '/pages/dashboard.php');
         }
@@ -114,20 +127,20 @@ try {
         ]);
     }
 
-    setFlash('success', 'Invoice saved successfully.');
+    $db->commit();
 
-    // Save & Download PDF
-    if ($action === 'save_download') {
-        redirect(SITE_URL . '/actions/pdf-download.php?id=' . $id);
-    }
+    setFlash('success', 'Invoice saved successfully.');
 
     redirect(SITE_URL . '/pages/invoice-edit.php?id=' . $id);
 
 } catch (Throwable $e) {
+    if ($db->inTransaction()) {
+        $db->rollBack();
+    }
     error_log('[InvoiceApp] Save error: ' . $e->getMessage());
     setFlash('error', 'Failed to save invoice. Please try again.');
-    redirect($id > 0
-        ? SITE_URL . '/pages/invoice-edit.php?id=' . $id
+    redirect($submittedId > 0
+        ? SITE_URL . '/pages/invoice-edit.php?id=' . $submittedId
         : SITE_URL . '/pages/invoice-new.php'
     );
 }

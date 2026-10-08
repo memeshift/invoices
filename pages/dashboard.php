@@ -29,16 +29,28 @@ $stmt = $db->prepare($sql);
 $stmt->execute($params);
 $invoices = $stmt->fetchAll();
 
-// Summary totals
-$summaryStmt = $db->query(
+// Summary totals, per currency (EUR is always shown; other currencies only if invoices exist)
+$totals       = ['EUR' => ['paid' => 0.0, 'outstanding' => 0.0]];
+$totalCount   = 0;
+$overdueCount = 0;
+$summaryRows  = $db->query(
     "SELECT
+        currency,
         COUNT(*) AS total_count,
         SUM(CASE WHEN status = 'paid' THEN total ELSE 0 END) AS total_paid,
         SUM(CASE WHEN status IN ('sent','overdue') THEN total ELSE 0 END) AS total_outstanding,
         SUM(CASE WHEN status = 'overdue' THEN 1 ELSE 0 END) AS overdue_count
-     FROM invoices"
+     FROM invoices
+     GROUP BY currency"
 );
-$summary = $summaryStmt->fetch();
+foreach ($summaryRows as $row) {
+    $totals[$row['currency']] = [
+        'paid'        => (float) $row['total_paid'],
+        'outstanding' => (float) $row['total_outstanding'],
+    ];
+    $totalCount   += (int) $row['total_count'];
+    $overdueCount += (int) $row['overdue_count'];
+}
 
 $pageTitle = 'Dashboard';
 require_once dirname(__DIR__) . '/includes/header.php';
@@ -53,20 +65,24 @@ require_once dirname(__DIR__) . '/includes/header.php';
 <div class="summary-grid">
     <div class="summary-card">
         <span class="summary-label">Total Invoices</span>
-        <span class="summary-value"><?= (int) $summary['total_count'] ?></span>
+        <span class="summary-value"><?= $totalCount ?></span>
     </div>
     <div class="summary-card summary-card--paid">
         <span class="summary-label">Total Paid</span>
-        <span class="summary-value">€<?= number_format((float)$summary['total_paid'], 2, '.', ',') ?></span>
+        <?php foreach ($totals as $cur => $t): ?>
+        <span class="summary-value"><?= formatMoney($t['paid'], $cur) ?></span>
+        <?php endforeach; ?>
     </div>
     <div class="summary-card summary-card--outstanding">
         <span class="summary-label">Outstanding</span>
-        <span class="summary-value">€<?= number_format((float)$summary['total_outstanding'], 2, '.', ',') ?></span>
+        <?php foreach ($totals as $cur => $t): ?>
+        <span class="summary-value"><?= formatMoney($t['outstanding'], $cur) ?></span>
+        <?php endforeach; ?>
     </div>
-    <?php if ((int)$summary['overdue_count'] > 0): ?>
+    <?php if ($overdueCount > 0): ?>
     <div class="summary-card summary-card--overdue">
         <span class="summary-label">Overdue</span>
-        <span class="summary-value"><?= (int) $summary['overdue_count'] ?></span>
+        <span class="summary-value"><?= $overdueCount ?></span>
     </div>
     <?php endif; ?>
 </div>
