@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Invoice <?= e($invoice['invoice_number']) ?></title>
 <style>
     /* ── Local fonts (DomPDF loads from disk — no Google Fonts CDN) ── */
     @font-face {

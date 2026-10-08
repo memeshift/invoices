@@ -46,10 +46,16 @@ $options->set('fontCache',         dirname(__DIR__) . '/storage/font-cache/');
 $options->set('tempDir',           sys_get_temp_dir());
 $options->set('chroot',            dirname(__DIR__));
 
-$dompdf = new Dompdf($options);
-$dompdf->loadHtml($html, 'UTF-8');
-$dompdf->setPaper('A4', 'portrait');
-$dompdf->render();
+try {
+    $dompdf = new Dompdf($options);
+    $dompdf->loadHtml($html, 'UTF-8');
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+} catch (Throwable $e) {
+    error_log('[InvoiceApp] PDF error: ' . $e->getMessage());
+    setFlash('error', 'Could not generate the PDF. Please try again.');
+    redirect(SITE_URL . '/pages/invoice-edit.php?id=' . $id);
+}
 
 $filename = $invoice['invoice_number'] . '.pdf';
 

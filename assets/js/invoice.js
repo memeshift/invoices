@@ -7,6 +7,7 @@
 
 // ── State ────────────────────────────────────
 let itemIndex = document.querySelectorAll('#lineItemsBody .line-item-row').length;
+let formDirty = false;
 
 // ── Init ─────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Prevent accidental navigation away from unsaved changes
-    let formDirty = false;
     const form = document.getElementById('invoice-form');
     if (form) {
         form.addEventListener('input', () => { formDirty = true; });
@@ -88,6 +88,7 @@ function addLineItem() {
     row.querySelectorAll('.cur-sym').forEach(el => { el.textContent = sym; });
 
     document.getElementById('lineItemsBody').appendChild(row);
+    formDirty = true;
     bindRow(document.querySelector(`#lineItemsBody tr[data-index="${idx}"]`));
 
     // Focus the description field
@@ -99,6 +100,7 @@ function addLineItem() {
 function removeLineItem(btn) {
     const row  = btn.closest('tr');
     const body = document.getElementById('lineItemsBody');
+    formDirty = true;
 
     // Always keep at least one row
     if (body.querySelectorAll('.line-item-row').length <= 1) {
