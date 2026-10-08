@@ -15,6 +15,7 @@ storage/pdf-cache/*
 # ── Claude Code (local context, never published) ──
 CLAUDE.md
 .claude/
+.impeccable/
 
 # ── OS & editor noise ─────────────────────────
 .DS_Store
