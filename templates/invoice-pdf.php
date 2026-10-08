@@ -48,8 +48,10 @@
         src: url('<?= dirname(__DIR__) ?>/assets/fonts/DMMono-Medium.ttf') format('truetype');
     }
 
+    @page { margin: 0 0 130pt 0; }
+
     /* ── Reset ── */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body, div, table, td, th, tr { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
         font-family: 'Lora', Georgia, 'Times New Roman', serif;
@@ -109,7 +111,7 @@
         font-family: 'Lora', Georgia, serif;
         font-size: 9pt;
         color: #555;
-        line-height: 1.6;
+        line-height: 1.35;
         margin-top: 6pt;
     }
 
@@ -195,9 +197,24 @@
         font-family: 'Lora', Georgia, serif;
         font-size: 9.5pt;
         color: #404040;
-        line-height: 1.6;
+        line-height: 1.35;
         margin-top: 3pt;
         white-space: pre-line;
+    }
+
+    .bill-to-address + .bill-to-address {
+        margin-top: 0;
+    }
+
+    .meta-grid {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .meta-grid td {
+        width: 50%;
+        vertical-align: top;
+        padding: 0 0 10pt 0;
     }
 
     /* ── Line items table ── */
@@ -351,7 +368,7 @@
 
     /* ── Banking / payment details ── */
     .bank-section {
-        padding: 14pt 36pt 0;
+        padding: 14pt 36pt 14pt;
         border-top: 1pt solid #e8e8e8;
         margin-top: 14pt;
     }
@@ -382,12 +399,19 @@
         color: #333;
     }
 
+    /* ── Bottom block (bank + footer), repeated on every page ── */
+    .pdf-bottom {
+        position: fixed;
+        bottom: -130pt;
+        left: 0;
+        width: 100%;
+    }
+
     /* ── Footer band ── */
     .pdf-footer {
         background: #FAC946;
         border-top: 4pt solid #F90002;
         padding: 10pt 36pt;
-        margin-top: 20pt;
         display: table;
         width: 100%;
     }
@@ -432,6 +456,44 @@
 </style>
 </head>
 <body>
+    <div class="pdf-bottom">
+    <!-- ── Bank Details ── -->
+    <?php if (FREELANCER_IBAN || FREELANCER_BANK): ?>
+    <div class="bank-section">
+        <div class="bank-grid">
+            <?php if (FREELANCER_BANK): ?>
+            <div class="bank-col">
+                <div class="bank-label">Bank</div>
+                <div class="bank-value"><?= e(FREELANCER_BANK) ?></div>
+            </div>
+            <?php endif; ?>
+            <?php if (FREELANCER_IBAN): ?>
+            <div class="bank-col">
+                <div class="bank-label">IBAN</div>
+                <div class="bank-value"><?= e(FREELANCER_IBAN) ?></div>
+            </div>
+            <?php endif; ?>
+            <?php if (FREELANCER_BIC): ?>
+            <div class="bank-col">
+                <div class="bank-label">BIC / SWIFT</div>
+                <div class="bank-value"><?= e(FREELANCER_BIC) ?></div>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <!-- ── Footer ── -->
+    <div class="pdf-footer">
+        <div class="footer-left">
+            <?= e(FREELANCER_NAME) ?>
+            <?php if (FREELANCER_WEBSITE): ?> · <?= e(FREELANCER_WEBSITE) ?><?php endif; ?>
+        </div>
+        <div class="footer-right">
+            Invoice <strong><?= e($invoice['invoice_number']) ?></strong>
+        </div>
+    </div>
+    </div><!-- /.pdf-bottom -->
 <div class="page">
 
     <!-- ── Header ── -->
@@ -446,13 +508,9 @@
                     <?php if (FREELANCER_ADDR1): ?><?= e(FREELANCER_ADDR1) ?><br><?php endif; ?>
                     <?php if (FREELANCER_ADDR2): ?><?= e(FREELANCER_ADDR2) ?><br><?php endif; ?>
                     <?php if (FREELANCER_EMAIL): ?><?= e(FREELANCER_EMAIL) ?><br><?php endif; ?>
-                    <?php if (FREELANCER_PHONE): ?><?= e(FREELANCER_PHONE) ?><?php endif; ?>
+                    <?php if (FREELANCER_PHONE): ?><?= e(FREELANCER_PHONE) ?><br><?php endif; ?>
+                    <?php if (FREELANCER_TAX_ID): ?><?= e(FREELANCER_TAX_ID_LABEL ?: 'Tax ID') ?>: <?= e(FREELANCER_TAX_ID) ?><?php endif; ?>
                 </div>
-                <?php if (FREELANCER_TAX_ID): ?>
-                <div class="freelancer-detail">
-                    <?= e(FREELANCER_TAX_ID_LABEL ?: 'Tax ID') ?>: <?= e(FREELANCER_TAX_ID) ?>
-                </div>
-                <?php endif; ?>
             </div>
             <div class="header-right">
                 <div class="invoice-label">Invoice</div>
@@ -481,24 +539,28 @@
             <?php endif; ?>
         </div>
         <div class="meta-right">
-            <div class="meta-block">
-                <div class="meta-label">Issue Date</div>
-                <div class="meta-value"><?= e(date('d M Y', strtotime($invoice['issue_date']))) ?></div>
-            </div>
-            <div class="meta-block">
-                <div class="meta-label">Due Date</div>
-                <div class="meta-value"><?= e(date('d M Y', strtotime($invoice['due_date']))) ?></div>
-            </div>
-            <?php if ($invoice['paid_date']): ?>
-            <div class="meta-block">
-                <div class="meta-label">Paid Date</div>
-                <div class="meta-value"><?= e(date('d M Y', strtotime($invoice['paid_date']))) ?></div>
-            </div>
-            <?php endif; ?>
-            <div class="meta-block">
-                <div class="meta-label">Currency</div>
-                <div class="meta-value"><?= e($invoice['currency']) ?></div>
-            </div>
+            <table class="meta-grid">
+                <tr>
+                    <td>
+                        <div class="meta-label">Issue Date</div>
+                        <div class="meta-value"><?= e(date('d M Y', strtotime($invoice['issue_date']))) ?></div>
+                    </td>
+                    <td>
+                        <div class="meta-label">Due Date</div>
+                        <div class="meta-value"><?= e(date('d M Y', strtotime($invoice['due_date']))) ?></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="meta-label">Paid Date</div>
+                        <div class="meta-value"><?= $invoice['paid_date'] ? e(date('d M Y', strtotime($invoice['paid_date']))) : '-' ?></div>
+                    </td>
+                    <td>
+                        <div class="meta-label">Currency</div>
+                        <div class="meta-value"><?= e($invoice['currency']) ?></div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 
@@ -555,42 +617,6 @@
     </div>
     <?php endif; ?>
 
-    <!-- ── Bank Details ── -->
-    <?php if (FREELANCER_IBAN || FREELANCER_BANK): ?>
-    <div class="bank-section">
-        <div class="bank-grid">
-            <?php if (FREELANCER_BANK): ?>
-            <div class="bank-col">
-                <div class="bank-label">Bank</div>
-                <div class="bank-value"><?= e(FREELANCER_BANK) ?></div>
-            </div>
-            <?php endif; ?>
-            <?php if (FREELANCER_IBAN): ?>
-            <div class="bank-col">
-                <div class="bank-label">IBAN</div>
-                <div class="bank-value"><?= e(FREELANCER_IBAN) ?></div>
-            </div>
-            <?php endif; ?>
-            <?php if (FREELANCER_BIC): ?>
-            <div class="bank-col">
-                <div class="bank-label">BIC / SWIFT</div>
-                <div class="bank-value"><?= e(FREELANCER_BIC) ?></div>
-            </div>
-            <?php endif; ?>
-        </div>
-    </div>
-    <?php endif; ?>
-
-    <!-- ── Footer ── -->
-    <div class="pdf-footer">
-        <div class="footer-left">
-            <?= e(FREELANCER_NAME) ?>
-            <?php if (FREELANCER_WEBSITE): ?> · <?= e(FREELANCER_WEBSITE) ?><?php endif; ?>
-        </div>
-        <div class="footer-right">
-            Invoice <?= e($invoice['invoice_number']) ?>
-        </div>
-    </div>
 
 </div><!-- /.page -->
 </body>
