@@ -533,7 +533,7 @@
                 <td class="value-cell"><?= currencySymbol($invoice['currency']) ?><?= number_format((float)$invoice['subtotal'], 2) ?></td>
             </tr>
             <tr class="totals-row-total">
-                <td class="total-label">Total Due</td>
+                <td class="total-label"><?= $invoice['status'] === 'paid' ? 'Total Paid' : 'Total Due' ?></td>
                 <td class="total-value"><?= currencySymbol($invoice['currency']) ?><?= number_format((float)$invoice['total'], 2) ?></td>
             </tr>
         </table>
