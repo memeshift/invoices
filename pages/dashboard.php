@@ -58,7 +58,6 @@ require_once dirname(__DIR__) . '/includes/header.php';
 
 <div class="page-heading">
     <h2>Dashboard</h2>
-    <a href="<?= SITE_URL ?>/pages/invoice-new.php" class="btn btn-primary">+ New Invoice</a>
 </div>
 
 <!-- Summary cards -->

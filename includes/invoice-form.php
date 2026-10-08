@@ -63,14 +63,6 @@ $actionUrl = SITE_URL . '/actions/invoice-save.php';
                         <option value="EUR" <?= $invoice['currency'] === 'EUR' ? 'selected' : '' ?>>€ EUR — Euro</option>
                         <option value="USD" <?= $invoice['currency'] === 'USD' ? 'selected' : '' ?>>$ USD — US Dollar</option>
                     </select>
-                    <div class="currency-preview">
-                        <span class="currency-symbol-preview" id="currencySymbolPreview">
-                            <?= $invoice['currency'] === 'EUR' ? '€' : '$' ?>
-                        </span>
-                        <span class="currency-name-preview" id="currencyNamePreview">
-                            <?= $invoice['currency'] === 'EUR' ? 'Euro' : 'US Dollar' ?>
-                        </span>
-                    </div>
                 </div>
             </div>
 

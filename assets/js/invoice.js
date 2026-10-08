@@ -38,13 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function onCurrencyChange() {
     const select = document.getElementById('currency');
     const sym    = select.value === 'EUR' ? '€' : '$';
-    const name   = select.value === 'EUR' ? 'Euro' : 'US Dollar';
-
-    // Update preview badge
-    const symPreview  = document.getElementById('currencySymbolPreview');
-    const namePreview = document.getElementById('currencyNamePreview');
-    if (symPreview)  symPreview.textContent  = sym;
-    if (namePreview) namePreview.textContent = name;
 
     // Update every visible currency symbol on the form
     document.querySelectorAll('.cur-sym').forEach(el => {

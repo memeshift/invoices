@@ -147,14 +147,14 @@ h1, h2, h3, h4 {
     gap: 1.25rem;
 }
 
-.site-nav a {
+.site-nav a:not(.btn) {
     font-family: var(--font-mono);
     font-size: 0.8rem;
     color: var(--dark);
     text-decoration: none;
     letter-spacing: 0.02em;
 }
-.site-nav a:hover { color: var(--teal-d); }
+.site-nav a:not(.btn):hover { color: var(--teal-d); }
 
 .site-nav form { display: flex; }
 
@@ -364,7 +364,6 @@ body.login-page {
 .field input[type="number"],
 .field input[type="password"],
 .field textarea,
-.field select,
 input[type="text"],
 input[type="email"],
 input[type="date"],
@@ -959,32 +958,6 @@ select {
     flex: 1;
     font-family: var(--font-mono);
     font-size: 0.88rem;
-}
-
-.currency-preview {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: var(--yellow);
-    padding: 0.35rem 0.65rem;
-    border-radius: var(--radius);
-    flex-shrink: 0;
-    border: 2px solid transparent;
-    transition: all 0.15s ease;
-}
-
-.currency-symbol-preview {
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--dark);
-}
-
-.currency-name-preview {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    color: var(--dark);
-    opacity: 0.75;
 }
 
 /* ── Status select in edit header ── */
